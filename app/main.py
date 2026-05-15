@@ -6,7 +6,8 @@ from typing import Annotated, Callable
 from uuid import uuid4
 
 from fastapi import FastAPI, Query
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 
 from app.exceptions import DomainError, ErrorCodes
 from app.models import (
@@ -16,6 +17,8 @@ from app.models import (
     BookingStatus,
     CancellationResponse,
     CreateBookingRequest,
+    Service,
+    User,
     ensure_bogota_datetime,
 )
 from app.repository import DataStore, JsonRepository
@@ -23,6 +26,7 @@ from app.rules import calculate_cancellation_amounts, validate_booking_creation,
 
 
 DEFAULT_DATA_PATH = Path(__file__).resolve().parent.parent / "data" / "seed.json"
+STATIC_DIR = Path(__file__).resolve().parent / "static"
 
 
 def default_now() -> datetime:
@@ -36,6 +40,7 @@ def create_app(
 ) -> FastAPI:
     app = FastAPI(title="Booking Service", version="1.0.0")
     repository = JsonRepository(data_path)
+    app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
     @app.exception_handler(DomainError)
     async def domain_error_handler(_, exc: DomainError) -> JSONResponse:
@@ -47,6 +52,18 @@ def create_app(
     @app.get("/api/v1/health")
     def health() -> dict[str, str]:
         return {"status": "ok"}
+
+    @app.get("/", include_in_schema=False)
+    def dashboard() -> FileResponse:
+        return FileResponse(STATIC_DIR / "index.html")
+
+    @app.get("/api/v1/users", response_model=list[User])
+    def list_users() -> list[User]:
+        return list(repository.read().users.values())
+
+    @app.get("/api/v1/services", response_model=list[Service])
+    def list_services() -> list[Service]:
+        return list(repository.read().services.values())
 
     @app.post("/api/v1/bookings", response_model=BookingResponse, status_code=201)
     def create_booking(request: CreateBookingRequest) -> Booking:
@@ -153,4 +170,3 @@ def create_app(
 
 
 app = create_app()
-

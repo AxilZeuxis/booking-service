@@ -23,9 +23,12 @@ uvicorn app.main:app --reload
 
 Luego abrir:
 
+- Interfaz demo: `http://localhost:8000`
 - API: `http://localhost:8000`
 - Documentación interactiva: `http://localhost:8000/docs`
 - Healthcheck: `http://localhost:8000/api/v1/health`
+
+La interfaz demo permite crear, listar y cancelar reservas usando la misma API. Es una capa visual opcional para facilitar la revisión; las reglas de negocio siguen viviendo en el backend.
 
 ## Correr pruebas
 
@@ -58,8 +61,8 @@ La respuesta incluye el porcentaje y los montos calculados:
   "id": "b-001",
   "status": "cancelled",
   "refund_percentage": 50,
-  "refund_amount_cents": 60000,
-  "charged_amount_cents": 60000,
+  "refund_amount_cents": 6000000,
+  "charged_amount_cents": 6000000,
   "cancelled_at": "2026-05-15T08:00:00-05:00"
 }
 ```
@@ -67,6 +70,11 @@ La respuesta incluye el porcentaje y los montos calculados:
 ### Listar reservas de un usuario
 
 `GET /api/v1/users/{user_id}/bookings?from=2026-05-19T00:00:00-05:00&to=2026-05-20T23:59:59-05:00`
+
+### Catálogo para interfaz demo
+
+- `GET /api/v1/users`
+- `GET /api/v1/services`
 
 ## Decisiones técnicas
 
@@ -128,4 +136,3 @@ Si un registro no se puede interpretar o le falta un dato crítico, se descarta 
 - Añadir logs estructurados y trazabilidad por request.
 - Agregar más pruebas de concurrencia.
 - Calcular festivos con una librería o servicio confiable.
-

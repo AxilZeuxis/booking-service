@@ -23,6 +23,23 @@ def test_create_booking_success(client: TestClient) -> None:
     assert body["end_at"] == "2026-05-19T10:30:00-05:00"
 
 
+def test_dashboard_is_served(client: TestClient) -> None:
+    response = client.get("/")
+
+    assert response.status_code == 200
+    assert "Panel de reservas" in response.text
+
+
+def test_catalog_endpoints_return_users_and_services(client: TestClient) -> None:
+    users_response = client.get("/api/v1/users")
+    services_response = client.get("/api/v1/services")
+
+    assert users_response.status_code == 200
+    assert services_response.status_code == 200
+    assert users_response.json()[0]["id"] == "u-001"
+    assert services_response.json()[0]["price_cents"] == 12000000
+
+
 def test_create_booking_on_holiday_returns_422(client: TestClient) -> None:
     response = client.post(
         "/api/v1/bookings",
@@ -163,8 +180,8 @@ def test_cancel_booking_returns_amounts(seed_path) -> None:
 
     assert response.status_code == 200
     assert response.json()["refund_percentage"] == 50
-    assert response.json()["refund_amount_cents"] == 60000
-    assert response.json()["charged_amount_cents"] == 60000
+    assert response.json()["refund_amount_cents"] == 6000000
+    assert response.json()["charged_amount_cents"] == 6000000
 
 
 def test_list_bookings_in_date_range(seed_path) -> None:
@@ -208,4 +225,3 @@ def test_list_bookings_in_date_range(seed_path) -> None:
     body = response.json()
     assert len(body) == 1
     assert body[0]["id"] == "b-001"
-

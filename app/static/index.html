@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Booking Service</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Navegación principal">
+        <div class="brand">
+          <div class="brand-mark">BS</div>
+          <div>
+            <strong>Booking Service</strong>
+            <span>Gestión de reservas</span>
+          </div>
+        </div>
+
+        <nav class="nav-list">
+          <a class="nav-item is-active" href="#reservas">Reservas</a>
+          <a class="nav-item" href="/docs">Swagger API</a>
+          <a class="nav-item" href="/api/v1/health">Healthcheck</a>
+        </nav>
+
+        <div class="sidebar-note">
+          <span>Zona horaria</span>
+          <strong>America/Bogota</strong>
+        </div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <div>
+            <h1>Panel de reservas</h1>
+            <p>Crea, lista y cancela reservas.</p>
+          </div>
+          <div class="status-pill" id="api-status">Conectando API</div>
+        </header>
+
+        <section class="summary-grid" aria-label="Resumen">
+          <article class="summary-tile">
+            <span>Reservas visibles</span>
+            <strong id="metric-visible">0</strong>
+          </article>
+          <article class="summary-tile">
+            <span>Activas</span>
+            <strong id="metric-active">0</strong>
+          </article>
+          <article class="summary-tile">
+            <span>Canceladas</span>
+            <strong id="metric-cancelled">0</strong>
+          </article>
+          <article class="summary-tile">
+            <span>Último reembolso</span>
+            <strong id="metric-refund">$0</strong>
+          </article>
+        </section>
+
+        <section class="workspace" id="reservas">
+          <section class="panel form-panel" aria-labelledby="create-title">
+            <div class="panel-header">
+              <div>
+                <h2 id="create-title">Nueva reserva</h2>
+                <p>Selecciona usuario, servicio y fecha de inicio.</p>
+              </div>
+            </div>
+
+            <form id="booking-form" class="form-grid">
+              <label>
+                Usuario
+                <select id="user-select" required></select>
+              </label>
+
+              <label>
+                Servicio
+                <select id="service-select" required></select>
+              </label>
+
+              <label>
+                Fecha
+                <input id="booking-date" type="date" value="2026-05-19" required />
+              </label>
+
+              <label>
+                Hora
+                <input id="booking-time" type="time" value="12:00" required />
+              </label>
+
+              <button type="submit" class="primary-action">Crear reserva</button>
+            </form>
+
+            <div class="quick-tests" aria-label="Escenarios rápidos">
+              <button type="button" data-scenario="holiday">Festivo</button>
+              <button type="button" data-scenario="late">Menos de 2h</button>
+              <button type="button" data-scenario="hours">Fuera de horario</button>
+              <button type="button" data-scenario="overlap">Solapamiento</button>
+            </div>
+          </section>
+
+          <section class="panel result-panel" aria-live="polite" aria-labelledby="result-title">
+            <div class="panel-header">
+              <div>
+                <h2 id="result-title">Resultado</h2>
+                <p>Respuesta de la última operación.</p>
+              </div>
+            </div>
+
+            <div id="result-box" class="result-box is-muted">
+              Ejecuta una acción para ver la respuesta de la API.
+            </div>
+          </section>
+        </section>
+
+        <section class="panel list-panel" aria-labelledby="list-title">
+          <div class="panel-header list-header">
+            <div>
+              <h2 id="list-title">Reservas por usuario</h2>
+              <p>Filtra por rango de fechas y cancela reservas activas.</p>
+            </div>
+
+            <form id="filter-form" class="filter-form">
+              <label>
+                Desde
+                <input id="from-date" type="date" value="2026-05-19" required />
+              </label>
+              <label>
+                Hasta
+                <input id="to-date" type="date" value="2026-05-22" required />
+              </label>
+              <button type="submit">Actualizar</button>
+            </form>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Usuario</th>
+                  <th>Servicio</th>
+                  <th>Inicio</th>
+                  <th>Estado</th>
+                  <th>Reembolso</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="bookings-table"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="/static/app.js" defer></script>
+  </body>
+</html>

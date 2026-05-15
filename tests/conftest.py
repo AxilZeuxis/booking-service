@@ -27,7 +27,7 @@ def base_seed(bookings: list[dict] | None = None) -> dict:
                 "name": "Consulta general",
                 "duration_minutes": 60,
                 "professional_id": "p-001",
-                "price_cents": 120000,
+                "price_cents": 12000000,
                 "non_refundable": False,
             },
             {
@@ -35,7 +35,7 @@ def base_seed(bookings: list[dict] | None = None) -> dict:
                 "name": "Taller especializado",
                 "duration_minutes": 90,
                 "professional_id": "p-001",
-                "price_cents": 250000,
+                "price_cents": 25000000,
                 "non_refundable": True,
             },
             {
@@ -43,7 +43,7 @@ def base_seed(bookings: list[dict] | None = None) -> dict:
                 "name": "Sesión rápida",
                 "duration_minutes": 30,
                 "professional_id": "p-002",
-                "price_cents": 80000,
+                "price_cents": 8000000,
                 "non_refundable": False,
             },
         ],
@@ -66,4 +66,3 @@ def seed_path(tmp_path: Path) -> Path:
 def client(seed_path: Path) -> TestClient:
     app = create_app(data_path=seed_path, now_provider=lambda: FIXED_NOW)
     return TestClient(app)
-
