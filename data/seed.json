@@ -1,0 +1,83 @@
+{
+  "users": [
+    {
+      "id": "u-001",
+      "name": "Ana Pérez",
+      "plan": "standard"
+    },
+    {
+      "id": "u-002",
+      "name": "Carlos Ruiz",
+      "plan": "premium"
+    },
+    {
+      "id": "u-003",
+      "name": "María Gómez"
+    }
+  ],
+  "services": [
+    {
+      "id": "s-001",
+      "name": "Consulta general",
+      "duration_minutes": 60,
+      "professional_id": "p-001",
+      "price_cents": 120000,
+      "non_refundable": false
+    },
+    {
+      "id": "s-002",
+      "name": "Taller especializado",
+      "duration_minutes": 90,
+      "professional_id": "p-001",
+      "price_cents": 250000,
+      "non_refundable": true
+    },
+    {
+      "id": "s-003",
+      "name": "Sesión rápida",
+      "duration_minutes": 30,
+      "professional_id": "p-002",
+      "price_cents": 80000,
+      "non_refundable": false
+    }
+  ],
+  "bookings": [
+    {
+      "id": "b-001",
+      "user_id": "u-001",
+      "service_id": "s-001",
+      "start_at": "2026-05-20T10:00:00-05:00",
+      "status": "active",
+      "created_at": "2026-05-15T08:00:00-05:00"
+    },
+    {
+      "id": "b-002",
+      "user_id": "u-002",
+      "service_id": "s-003",
+      "start_at": "2026-05-21 14:00",
+      "status": "active",
+      "created_at": "2026-05-15T09:00:00"
+    },
+    {
+      "id": "b-003",
+      "user_id": "u-001",
+      "service_id": "s-002",
+      "start_at": "20/05/2026 15:00",
+      "status": "cancelled",
+      "created_at": "2026-05-14T12:00:00-05:00",
+      "cancelled_at": "2026-05-14T20:00:00-05:00",
+      "refund_percentage": 0,
+      "refund_amount_cents": 0,
+      "charged_amount_cents": 250000
+    },
+    {
+      "id": "b-invalid-date",
+      "user_id": "u-003",
+      "service_id": "s-003",
+      "start_at": "fecha-invalida",
+      "status": "active",
+      "created_at": "2026-05-15T09:00:00-05:00"
+    }
+  ]
+}
+
